@@ -19,6 +19,25 @@ public class EmployeeImpl implements EmployeeService {
     @Autowired
    private EmployeeRepo employeeRepo;
 
+
+   @Override
+   public LoginResponse loginEmployee(LoginDTO loginDTO) {
+       Employee employee1 = employeeRepo.findByEmail(loginDTO.getEmail());
+
+
+       if(employee1==null) return new LoginResponse("Email doest not exist ", false);
+
+
+         String payloadPassword = loginDTO.getPassword();
+         String encodedPassword = employee1.getPassword();
+         Boolean isPwdRight = passwordEncoder.matches(payloadPassword, encodedPassword);
+
+         if(!isPwdRight) return new LoginResponse("Password does not exit", false);
+       Optional<Employee> employee2 = employeeRepo.findOneByEmailAndPassword(employee1.getEmail(), encodedPassword);
+       if(employee2.isPresent()) return new LoginResponse("Login success", true);
+       return new LoginResponse("login failed", false);
+   }
+
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Override
@@ -29,20 +48,5 @@ public class EmployeeImpl implements EmployeeService {
          return employee.getEmployeeName();
     }
 
-    @Override
-    public LoginResponse loginEmployee(LoginDTO loginDTO) {
-        Employee employee1 = employeeRepo.findByEmail(loginDTO.getEmail());
-        if(employee1==null) return new LoginResponse("Email doest not exist ", false);
-
-          String payloadPassword = loginDTO.getPassword();
-          String encodedPassword = employee1.getPassword();
-          Boolean isPwdRight = passwordEncoder.matches(payloadPassword, encodedPassword);
-
-          if(!isPwdRight) return new LoginResponse("Password does not exit", false);
-
-        Optional<Employee> employee2 = employeeRepo.findOneByEmailAndPassword(employee1.getEmail(), encodedPassword);
-
-        if(employee2.isPresent()) return new LoginResponse("Login success", true);
-        return new LoginResponse("login failed", false);
-    }
+  
 }

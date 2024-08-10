@@ -16,24 +16,30 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @PostMapping(path = "/save")
-    public String saveEmployee(@RequestBody EmployeeDTO employeeDTO){
-        System.out.println("saveEmployee >>>>>>>>>");
-        String id = employeeService.addEmployee(employeeDTO);
-        return id;
+   
+
+   
+
+    @GetMapping(path = "/hello")
+    public ResponseEntity<?> hello(){
+        return ResponseEntity.ok("hello");
     }
 
     @PostMapping(path = "/login")
     public ResponseEntity<LoginResponse> loginEmployee(@RequestBody LoginDTO loginDTO ){
+
         System.out.println("saveEmployee >>>>>>>>>");
+        
         LoginResponse loginResponse = employeeService.loginEmployee(loginDTO);
 
 
         return ResponseEntity.ok(loginResponse);
     }
 
-    @GetMapping(path = "/hello")
-    public ResponseEntity<?> hello(){
-        return ResponseEntity.ok("hello");
+    @PostMapping(path = "/save")
+    public String saveEmployee(@RequestBody EmployeeDTO employeeDTO){
+        System.out.println("saveEmployee >>>>>>>>>");
+        String id = employeeService.addEmployee(employeeDTO);
+        return id;
     }
 }
