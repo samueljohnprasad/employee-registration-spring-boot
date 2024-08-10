@@ -25,7 +25,7 @@ public class EmployeeImpl implements EmployeeService {
        Employee employee1 = employeeRepo.findByEmail(loginDTO.getEmail());
 
 
-       if(employee1==null) return new LoginResponse("Email doest not exist ", false);
+       if(employee1==null) return new LoginResponse("Email does not exist", false);
 
 
          String payloadPassword = loginDTO.getPassword();
